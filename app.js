@@ -3,18 +3,20 @@ const app = express();
 const session = require("express-session");
 const SQLiteStore = require("connect-sqlite3")(session);
 
-
 app.use(
   session({
-    store: new SQLiteStore({ db: "sessions.sqlite", dir: "./database", concurrentDB: true }),
-    secret: "your_secret_key",
+    store: new pgSession({
+      pool: db.pool,
+      tableName: "session",
+    }),
+    secret: process.env.SESSION_SECRET || "your_secret_key",
     resave: false,
     saveUninitialized: false, // only save sessions when something is stored
     cookie: {
       maxAge: 1000 * 60 * 60 * 24, // 1 day
     },
   })
-);
+
 
 const port = process.env.PORT || 3001;
 app.use(express.static("public"));

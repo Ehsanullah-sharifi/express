@@ -1,15 +1,10 @@
-const sqlite = require("sqlite3").verbose();
-const path = require("path");
-const db = new sqlite.Database(path.join(__dirname, "database.db"), (err) => {
-  if (err) {
-    console.error("Could not connect to database", err);
-  } else {
-    console.log("Connected to database");
-  }
+const { Pool } = require("pg");
+
+const pool = new Pool({
+  connectionString: process.env.DATABASE_URL,
+  ssl: { rejectUnauthorized: false },
 });
-db.run(`CREATE TABLE IF NOT EXISTS users (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  username TEXT UNIQUE,
-  password TEXT
-)`);
-module.exports = db;
+module.exports = {
+  pool,
+  query: (text, params) => pool.query(text, params),
+};
