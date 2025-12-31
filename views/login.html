@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Login</title>
+
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(to right, #4c6ef5, #4dabf7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        padding: 20px; /* for small screens */
+      }
+
+      .card {
+        background: white;
+        width: 100%;
+        max-width: 380px;
+        padding: 35px 30px;
+        border-radius: 12px;
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+        animation: fadeIn 0.6s ease-in-out;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      h1 {
+        text-align: center;
+        margin-bottom: 25px;
+        color: #333;
+      }
+
+      label {
+        font-weight: bold;
+        font-size: 14px;
+        color: #555;
+      }
+
+      input[type="text"],
+      input[type="password"] {
+        width: 100%;
+        padding: 12px;
+        font-size: 16px;
+        margin-top: 6px;
+        margin-bottom: 18px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        transition: border 0.2s;
+      }
+
+      input[type="text"]:focus,
+      input[type="password"]:focus {
+        border-color: #4dabf7;
+        outline: none;
+      }
+
+      input[type="submit"] {
+        width: 100%;
+        background: #4c6ef5;
+        color: white;
+        padding: 12px;
+        border: none;
+        border-radius: 6px;
+        font-size: 17px;
+        cursor: pointer;
+        transition: background 0.2s;
+      }
+
+      input[type="submit"]:hover {
+        background: #364fc7;
+      }
+
+      /* Responsive adjustments */
+      @media (max-width: 480px) {
+        .card {
+          padding: 25px 20px;
+        }
+
+        h1 {
+          font-size: 22px;
+        }
+
+        input[type="submit"] {
+          font-size: 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="card">
+      <h1>Login</h1>
+
+      <form action="/login" method="POST">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <input type="submit" value="Login" />
+        <br />
+        <div>
+            <button
+              type="button"
+              style="
+                margin-top: 10px;
+                background: none;
+                border: none;
+                color: #4c6ef5;
+                cursor: pointer;
+              "
+              action="/signup"
+            >
+              <p>Don't have an account? <br /><a href="/signup">Sign Up</a></p>
+            </button>
+        </div>
+      </form>
+    </div>
+    <script>
+      document
+        .getElementById("loginForm")
+        .addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const data = {
+            username: document.getElementById("username").value,
+            password: document.getElementById("password").value,
+          };
+
+          const res = await fetch("/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(data),
+          });
+
+          const result = await res.json();
+          console.log(result);
+        });
+    </script>
+  </body>
+</html>
