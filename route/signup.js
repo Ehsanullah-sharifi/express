@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcrypt");
 const path = require("path");
 const db = require("../database/db.js"); // your pg wrapper
 
@@ -13,11 +14,11 @@ router.get("/signup", (req, res) => {
 // POST /signup → save user to PostgreSQL
 router.post("/signup", async (req, res) => {
   const { username, password } = req.body;
-
   try {
+    const hashedPassword = await bcrypt.hash(password, 10);
     await db.query("INSERT INTO users (username, password) VALUES ($1, $2)", [
       username,
-      password,
+      hashedPassword,
     ]);
 
     console.log("Signup successful for user:", username);

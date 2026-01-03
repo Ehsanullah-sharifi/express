@@ -1,9 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const path = require("path");
-const db = require("../database/db.js"); // this is your pg wrapper
+const db = require("../database/db.js");
+const bcrypt = require("bcrypt");
 
-// Redirect if user is already logged in
+// Redirect if logged in
 function redirectIfLoggedIn(req, res, next) {
   if (req.session && req.session.user) {
     return res.redirect("/");
@@ -11,29 +12,39 @@ function redirectIfLoggedIn(req, res, next) {
   next();
 }
 
-// Authentication middleware using PostgreSQL
-async function auth(req, res, next) {
+// LOGIN AUTH LOGIC
+async function auth(req, res) {
   const { username, password } = req.body;
 
   try {
-    // Query PostgreSQL
-    const result = await db.query(
-      "SELECT * FROM users WHERE username = $1 AND password = $2",
-      [username, password]
-    );
+    // 1. Get user by username ONLY
+    const result = await db.query("SELECT * FROM users WHERE username = $1", [
+      username,
+    ]);
 
-    if (result.rows.length > 0) {
-      // User exists → login success
-      req.session.user = username;
-      console.log("Login successful");
-      return res.redirect("/");
-    } else {
-      // Wrong username/password
-      console.log("Invalid credentials");
+    // No user
+    if (result.rows.length === 0) {
+      console.log("User not found");
       return res.sendFile(path.join(__dirname, "../views/login.html"));
     }
+
+    const user = result.rows[0];
+
+    // 2. Compare bcrypt hash
+    const match = await bcrypt.compare(password, user.password);
+
+    if (!match) {
+      console.log("Password mismatch");
+      return res.sendFile(path.join(__dirname, "../views/login.html"));
+    }
+
+    // 3. Login success
+    req.session.user = user.id;
+    console.log("Login successful");
+
+    return res.redirect("/");
   } catch (err) {
-    console.error("Error during login:", err.message);
+    console.error("Error:", err.message);
     return res.sendFile(path.join(__dirname, "../views/login.html"));
   }
 }
@@ -43,7 +54,7 @@ router.post("/login", redirectIfLoggedIn, auth);
 
 // GET /login
 router.get("/login", redirectIfLoggedIn, (req, res) => {
-  return res.sendFile(path.join(__dirname, "../views/login.html"));
+  res.sendFile(path.join(__dirname, "../views/login.html"));
 });
 
 module.exports = router;
