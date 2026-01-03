@@ -4,24 +4,103 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="/style2.css" />
-    <title>Document</title>
+    <title>Sign Up</title>
   </head>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      background: linear-gradient(to right, #4c6ef5, #4dabf7);
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 350px;
+      background: white;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    .form-box {
+      display: flex;
+      flex-direction: column;
+      text-align: left;
+    }
+
+    label {
+      margin: 8px 0 5px;
+    }
+
+    input {
+      padding: 10px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      width: 100%;
+      box-sizing: border-box;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 10px;
+      background: #0275d8;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+      margin-bottom: 10px;
+    }
+
+    .btn:hover {
+      background: #025aa5;
+    }
+
+    .btn-secondary {
+      width: 100%;
+      padding: 10px;
+      background: #5a6268;
+      color: white;
+      border: none;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+
+    .btn-secondary:hover {
+      background: #43494d;
+    }
+  </style>
   <body>
-    <h2>Sign Up</h2>
-    <form action="/signup" method="POST">
-      <label for="username">Username:</label><br />
-      <input type="text" id="username" name="username" required /><br /><br />
-      <label for="password">Password:</label><br />
-      <input
-        type="password"
-        id="password"
-        name="password"
-        required
-      /><br /><br />
-      <button type="submit">Sign Up</button>
-      <button type="button" onclick="window.location.href='/'">
-        Go to Login
-      </button>
-    </form>
+    <div class="container">
+      <h2>Create an Account</h2>
+
+      <form action="/signup" method="POST" class="form-box">
+        <label for="username">Username</label>
+        <input type="text" id="username" name="username" required />
+
+        <label for="password">Password</label>
+        <input type="password" id="password" name="password" required />
+
+        <button type="submit" class="btn">Sign Up</button>
+
+        <button
+          type="button"
+          class="btn-secondary"
+          onclick="window.location.href='/'"
+        >
+          Go to Login
+        </button>
+      </form>
+    </div>
   </body>
 </html>

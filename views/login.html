@@ -19,7 +19,7 @@
         justify-content: center;
         align-items: center;
         height: 100vh;
-        padding: 20px; /* for small screens */
+        padding: 20px;
       }
 
       .card {
@@ -47,24 +47,26 @@
         text-align: center;
         margin-bottom: 25px;
         color: #333;
+        font-size: 27px;
       }
 
       label {
+        display: block;
         font-weight: bold;
-        font-size: 14px;
-        color: #555;
+        margin-bottom: 6px;
+        color: #444;
+        font-size: 15px;
       }
 
       input[type="text"],
       input[type="password"] {
         width: 100%;
         padding: 12px;
-        font-size: 16px;
-        margin-top: 6px;
+        font-size: 15px;
         margin-bottom: 18px;
         border: 1px solid #ccc;
         border-radius: 6px;
-        transition: border 0.2s;
+        transition: 0.25s border;
       }
 
       input[type="text"]:focus,
@@ -82,6 +84,7 @@
         border-radius: 6px;
         font-size: 17px;
         cursor: pointer;
+        margin-top: 10px;
         transition: background 0.2s;
       }
 
@@ -89,7 +92,22 @@
         background: #364fc7;
       }
 
-      /* Responsive adjustments */
+      .signup-box {
+        margin-top: 15px;
+        text-align: center;
+        font-size: 14px;
+      }
+
+      .signup-box a {
+        color: #4c6ef5;
+        text-decoration: none;
+        font-weight: bold;
+      }
+
+      .signup-box a:hover {
+        text-decoration: underline;
+      }
+
       @media (max-width: 480px) {
         .card {
           padding: 25px 20px;
@@ -105,11 +123,12 @@
       }
     </style>
   </head>
+
   <body>
     <div class="card">
       <h1>Login</h1>
 
-      <form action="/login" method="POST">
+      <form id="loginForm" action="/login" method="POST">
         <label for="username">Username</label>
         <input type="text" id="username" name="username" required />
 
@@ -117,24 +136,13 @@
         <input type="password" id="password" name="password" required />
 
         <input type="submit" value="Login" />
-        <br />
-        <div>
-            <button
-              type="button"
-              style="
-                margin-top: 10px;
-                background: none;
-                border: none;
-                color: #4c6ef5;
-                cursor: pointer;
-              "
-              action="/signup"
-            >
-              <p>Don't have an account? <br /><a href="/signup">Sign Up</a></p>
-            </button>
+
+        <div class="signup-box">
+          Don't have an account? <a href="/signup">Sign Up</a>
         </div>
       </form>
     </div>
+
     <script>
       document
         .getElementById("loginForm")
